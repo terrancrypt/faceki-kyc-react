@@ -1,152 +1,156 @@
-# FACEKI KYC React Integration
+# KYC Face Detection Camera - React App
 
-Ứng dụng demo tích hợp FACEKI KYC SDK vào React với TypeScript.
+A React application that combines react-webcam for camera access and face-api.js for real-time KYC-suitable face detection. The app provides camera access, KYC face detection, photo capture, and download functionality.
 
-## 🚀 Tính năng
+## Features
 
-- ✅ Tích hợp FACEKI KYC SDK
-- ✅ Giao diện người dùng đẹp và hiện đại
-- ✅ Responsive design
-- ✅ TypeScript support
-- ✅ Error handling
-- ✅ Customizable theme
+- 🔍 **KYC Face Detection**: Uses face-api.js with TinyFaceDetector for KYC-suitable face detection
+- 📸 **Camera Access**: Uses react-webcam for reliable camera integration
+- 🖼️ **Photo Capture**: Capture photos when KYC-suitable faces are detected
+- 💾 **Download Photos**: Download captured photos with timestamps
+- 🎯 **Face Landmarks**: Visual indicators showing detected faces with confidence scores
+- 📱 **Responsive Design**: Works on desktop and mobile devices
+- 🌐 **CDN Models**: Loads AI models from CDN for faster initial setup
 
-## 📦 Cài đặt
+## Technologies Used
 
+- **React 19** with TypeScript
+- **Vite** for fast development and building
+- **Tailwind CSS** for styling
+- **react-webcam** for camera access
+- **face-api.js** for face detection
+- **Lucide React** for icons
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20.19+ or 22.12+
+- pnpm (recommended) or npm
+
+### Installation
+
+1. Clone the repository:
 ```bash
-# Clone repository
-git clone <your-repo-url>
+git clone <repository-url>
 cd faceki-kyc-react
+```
 
-# Cài đặt dependencies
+2. Install dependencies:
+```bash
 pnpm install
+```
 
-# Chạy development server
+3. Start the development server:
+```bash
 pnpm dev
 ```
 
-## 🔧 Cấu hình
+4. Open your browser and navigate to `http://localhost:5173`
 
-### 1. Lấy KYC Link từ FACEKI API
-
-Trước khi sử dụng, bạn cần lấy KYC Link từ FACEKI API:
+### Building for Production
 
 ```bash
-curl -X POST "https://api.faceki.com/v2/kyc/generate-link" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "referenceId": "unique-reference-id",
-    "redirectUrl": "https://your-domain.com/callback"
-  }'
+pnpm build
 ```
 
-Response sẽ có dạng:
-```json
-{
-  "responseCode": 0,
-  "data": "LINKID",  // Sử dụng giá trị này
-  "url": "Verification URL"
-}
-```
+The built files will be in the `dist` directory.
 
-### 2. Sử dụng trong ứng dụng
+## How to Use
 
-1. Nhập KYC Link vào ô input
-2. Nhấn "Bắt đầu xác minh KYC"
-3. Làm theo hướng dẫn trong SDK
+1. **Wait for Model Loading**: The app will automatically load the face detection models from CDN (may take a few minutes on first load)
 
-## 🎨 Tùy chỉnh Theme
+2. **Enable Camera**: Click "Start Camera" and allow camera access when prompted
 
-Bạn có thể tùy chỉnh giao diện bằng cách chỉnh sửa `theme` object trong `KYCVerification.tsx`:
+3. **KYC Face Detection**: Position your face in the camera view. The app will detect KYC-suitable faces and show green bounding boxes
 
-```typescript
-const sdkConfig = {
-  link,
-  theme: {
-    mainColor: "#FF5733",
-    secondaryColor: "#2ECC71",
-    backgroundColor: "#F4F4F4",
-    cardBackgroundColor: "#FFFFFF",
-    headingTextColor: "#333333",
-    secondaryTextColor: "#777777",
-    // ... các thuộc tính khác
-  },
-  // ...
-};
-```
+4. **Capture Photo**: Once a KYC-suitable face is detected, the "📸 Capture Photo" button will be enabled. Click it to capture a photo
 
-## 📁 Cấu trúc dự án
+5. **Download Photo**: Click "Download" to download the captured photo with timestamp
+
+## Project Structure
 
 ```
 src/
 ├── components/
-│   └── KYCVerification.tsx    # Component chính cho KYC
-├── App.tsx                    # Component chính
-├── App.css                    # Styles
-└── main.tsx                   # Entry point
+│   └── WebcamWithFaceDetection.tsx  # Main webcam + face detection component
+├── App.tsx                          # Main app component
+├── main.tsx                         # App entry point
+└── vite-env.d.ts                   # TypeScript declarations
 ```
 
-## 🔄 API Callbacks
+## Key Features Explained
 
-### onSuccess
-Được gọi khi xác minh KYC thành công:
+### KYC Face Detection
+- Uses TinyFaceDetector for fast detection
+- Detects KYC-suitable faces (reasonably clear and not too tilted)
+- Shows confidence scores for each detection
+- Displays face landmarks and quality analysis
+- Filters out faces that are too small, too tilted, or unclear
 
-```typescript
-const handleKYCSuccess = (data: any) => {
-  console.log('KYC verification completed successfully:', data);
-  // Xử lý logic khi thành công
-};
-```
+### Camera Management
+- Uses react-webcam for reliable camera access
+- Automatic camera permission handling
+- Proper cleanup when stopping camera
+- Error handling for camera access issues
 
-### onFail
-Được gọi khi xác minh KYC thất bại:
+### Photo Capture
+- Captures high-quality photos when KYC-suitable faces are detected
+- Adds timestamps to photos
+- Supports download functionality
+- Uses canvas for image processing
 
-```typescript
-const handleKYCFail = (data: any) => {
-  console.log('KYC verification failed:', data);
-  // Xử lý logic khi thất bại
-};
-```
+## Browser Compatibility
 
-## 🛠️ Scripts
+- Chrome/Chromium (recommended)
+- Firefox
+- Safari
+- Edge
 
-```bash
-# Development
-pnpm dev
+**Note**: Camera access requires HTTPS in production environments.
 
-# Build production
-pnpm build
+## Troubleshooting
 
-# Preview build
-pnpm preview
+### Camera Not Working
+- Ensure you've granted camera permissions
+- Check if another app is using the camera
+- Try refreshing the page
 
-# Lint code
-pnpm lint
-```
+### Models Not Loading
+- Check your internet connection
+- The models are loaded from CDN, so a stable connection is required
+- First load may take several minutes
 
-## 📚 Tài liệu tham khảo
+### Performance Issues
+- Close other browser tabs using camera
+- Ensure good lighting for better detection
+- The app runs face detection every 100ms for real-time experience
 
-- [FACEKI KYC Documentation](https://kycdocv2.faceki.com/web-sdk/react)
-- [React Documentation](https://react.dev)
-- [TypeScript Documentation](https://www.typescriptlang.org/)
+## Development
 
-## 🤝 Đóng góp
+### Available Scripts
 
-1. Fork repository
-2. Tạo feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Tạo Pull Request
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm preview` - Preview production build
+- `pnpm lint` - Run ESLint
 
-## 📄 License
+### Adding New Features
 
-MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+The app is built with TypeScript and follows React best practices. The main component is `FaceDetectionCamera.tsx` which contains all the face detection logic.
 
-## 🆘 Hỗ trợ
+## License
 
-Nếu gặp vấn đề, vui lòng:
+This project is open source and available under the MIT License.
 
-1. Kiểm tra [FAQ](https://kycdocv2.faceki.com/need-help/faqs)
-2. Tạo issue trên GitHub
-3. Liên hệ support: [FACEKI Support](https://kycdocv2.faceki.com/need-help/support)
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## Support
+
+If you encounter any issues or have questions, please open an issue on the repository.
