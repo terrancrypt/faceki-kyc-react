@@ -5,7 +5,7 @@ import {
   RotateCcw,
   Check,
   AlertCircle,
-  FlipCamera,
+  SwitchCamera,
 } from "lucide-react";
 import type { DocumentType, DocumentSide } from "../hooks/useKYCFlow";
 
@@ -151,7 +151,7 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
                         : "Chuyển sang camera sau"
                     }
                   >
-                    <FlipCamera size={20} />
+                    <SwitchCamera size={20} />
                     <span className="text-sm">
                       {isBackCamera ? "Camera trước" : "Camera sau"}
                     </span>
