@@ -1,13 +1,14 @@
-# KYC Face Detection Camera - React App
+# Liveness Detection - React App
 
-A React application that combines react-webcam for camera access and face-api.js for real-time KYC-suitable face detection. The app provides camera access, KYC face detection, photo capture, and download functionality.
+A React application that provides real-time liveness detection using face-api.js. The app guides users through a series of face movements (front, left, right) to verify they are real people, not photos or videos.
 
 ## Features
 
-- 🔍 **KYC Face Detection**: Uses face-api.js with TinyFaceDetector for KYC-suitable face detection
+- 🔐 **Liveness Detection**: Multi-step liveness verification (front, left, right angles)
 - 📸 **Camera Access**: Uses react-webcam for reliable camera integration
-- 🖼️ **Photo Capture**: Capture photos when KYC-suitable faces are detected
-- 💾 **Download Photos**: Download captured photos with timestamps
+- 🎬 **Video Recording**: Records the entire liveness flow for verification
+- 🖼️ **Photo Capture**: Captures photos at each step of the liveness process
+- 💾 **Download Results**: Download captured photos and video recordings
 - 🎯 **Face Landmarks**: Visual indicators showing detected faces with confidence scores
 - 📱 **Responsive Design**: Works on desktop and mobile devices
 - 🌐 **CDN Models**: Loads AI models from CDN for faster initial setup
@@ -18,7 +19,7 @@ A React application that combines react-webcam for camera access and face-api.js
 - **Vite** for fast development and building
 - **Tailwind CSS** for styling
 - **react-webcam** for camera access
-- **face-api.js** for face detection
+- **face-api.js** for face detection and landmark analysis
 - **Lucide React** for icons
 
 ## Getting Started
@@ -33,7 +34,7 @@ A React application that combines react-webcam for camera access and face-api.js
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd faceki-kyc-react
+cd faceki-liveness-react
 ```
 
 2. Install dependencies:
@@ -62,31 +63,42 @@ The built files will be in the `dist` directory.
 
 2. **Enable Camera**: Click "Start Camera" and allow camera access when prompted
 
-3. **KYC Face Detection**: Position your face in the camera view. The app will detect KYC-suitable faces and show green bounding boxes
+3. **Follow Liveness Steps**: The app will guide you through three steps:
+   - **Front**: Look straight at the camera for 3 seconds
+   - **Left**: Turn your head to the left for 3 seconds
+   - **Right**: Turn your head to the right for 3 seconds
 
-4. **Capture Photo**: Once a KYC-suitable face is detected, the "📸 Capture Photo" button will be enabled. Click it to capture a photo
-
-5. **Download Photo**: Click "Download" to download the captured photo with timestamp
+4. **Complete Verification**: Once all steps are completed, you'll see the results with captured photos and video
 
 ## Project Structure
 
 ```
 src/
 ├── components/
-│   └── WebcamWithFaceDetection.tsx  # Main webcam + face detection component
-├── App.tsx                          # Main app component
-├── main.tsx                         # App entry point
-└── vite-env.d.ts                   # TypeScript declarations
+│   ├── LivenessFlow.tsx           # Main liveness flow component
+│   ├── LivenessStepScreen.tsx     # Individual step screen
+│   ├── WebcamCamera.tsx           # Basic webcam component
+│   ├── WebcamWithFaceDetection.tsx # Webcam with face detection
+│   └── VideoProcessingTest.tsx    # Video processing utilities
+├── App.tsx                        # Main app component
+├── main.tsx                       # App entry point
+└── vite-env.d.ts                 # TypeScript declarations
 ```
 
 ## Key Features Explained
 
-### KYC Face Detection
+### Liveness Detection Flow
+- **Multi-step Verification**: Three distinct angles (front, left, right)
+- **Countdown Timer**: 3-second countdown before starting each liveness test
+- **Stability Detection**: Ensures face position is stable for 3 seconds at each step
+- **Real-time Feedback**: Visual indicators show progress and face position
+- **Video Recording**: Records the entire session for backend verification
+
+### Face Detection & Analysis
 - Uses TinyFaceDetector for fast detection
-- Detects KYC-suitable faces (reasonably clear and not too tilted)
-- Shows confidence scores for each detection
-- Displays face landmarks and quality analysis
-- Filters out faces that are too small, too tilted, or unclear
+- Analyzes face landmarks for position accuracy
+- Detects face angles and stability
+- Shows confidence scores and quality metrics
 
 ### Camera Management
 - Uses react-webcam for reliable camera access
@@ -94,11 +106,11 @@ src/
 - Proper cleanup when stopping camera
 - Error handling for camera access issues
 
-### Photo Capture
-- Captures high-quality photos when KYC-suitable faces are detected
-- Adds timestamps to photos
-- Supports download functionality
-- Uses canvas for image processing
+### Video Processing
+- Records high-quality video during liveness flow
+- Supports multiple video formats (WebM, MP4)
+- Automatic video processing and blob creation
+- Download functionality for verification
 
 ## Browser Compatibility
 
@@ -121,10 +133,11 @@ src/
 - The models are loaded from CDN, so a stable connection is required
 - First load may take several minutes
 
-### Performance Issues
-- Close other browser tabs using camera
+### Liveness Detection Issues
 - Ensure good lighting for better detection
-- The app runs face detection every 100ms for real-time experience
+- Follow the instructions carefully for each step
+- Keep your face centered and stable during each 3-second period
+- Make sure only one face is visible in the camera
 
 ## Development
 
@@ -137,7 +150,28 @@ src/
 
 ### Adding New Features
 
-The app is built with TypeScript and follows React best practices. The main component is `FaceDetectionCamera.tsx` which contains all the face detection logic.
+The app is built with TypeScript and follows React best practices. The main components are:
+- `LivenessFlow.tsx` - Orchestrates the entire liveness process
+- `LivenessStepScreen.tsx` - Handles individual step detection
+- `App.tsx` - Main app component with model loading
+
+## Deployment
+
+### Vercel Deployment
+
+This project is configured for easy deployment on Vercel. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+
+#### Quick Deploy
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Import your repository
+4. Deploy with default settings
+
+The project includes:
+- `vercel.json` configuration
+- Proper build scripts
+- TypeScript configuration for production
 
 ## License
 
