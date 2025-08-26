@@ -221,12 +221,14 @@ const LivenessStepScreen: React.FC<LivenessStepScreenProps> = ({
   }, [isModelLoaded, step]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+    <div className="max-w-4xl mx-auto p-3 sm:p-6 bg-white rounded-lg shadow-lg">
+      <div className="text-center mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
           {config.icon} {config.title}
         </h2>
-        <p className="text-gray-600">{config.instruction}</p>
+        <p className="text-sm sm:text-base text-gray-600 px-2">
+          {config.instruction}
+        </p>
       </div>
 
       {/* Camera Feed */}
@@ -252,14 +254,14 @@ const LivenessStepScreen: React.FC<LivenessStepScreenProps> = ({
         />
 
         {/* Status Overlay */}
-        <div className="absolute top-4 left-4 space-y-2">
+        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 space-y-1 sm:space-y-2">
           <div
-            className={`px-3 py-1 bg-${config.color}-500 text-white text-sm font-medium rounded-full`}
+            className={`px-2 sm:px-3 py-1 bg-${config.color}-500 text-white text-xs sm:text-sm font-medium rounded-full`}
           >
             {config.title}
           </div>
           <div
-            className={`px-3 py-1 rounded-full text-sm font-medium ${
+            className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
               faceDetected ? "bg-green-500 text-white" : "bg-red-500 text-white"
             }`}
           >
@@ -292,18 +294,18 @@ const LivenessStepScreen: React.FC<LivenessStepScreenProps> = ({
 
         {/* Progress Bar */}
         {progress > 0 && (
-          <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+          <div className="absolute inset-x-0 bottom-0 p-2 sm:p-4 bg-gradient-to-t from-black/60 to-transparent">
             <div className="text-white text-center">
-              <p className="text-lg font-medium mb-2">
+              <p className="text-base sm:text-lg font-medium mb-1 sm:mb-2">
                 Đang xác nhận tư thế...
               </p>
-              <div className="w-full bg-gray-200 rounded-full h-3">
+              <div className="w-full bg-gray-200 rounded-full h-2 sm:h-3">
                 <div
-                  className="bg-green-500 h-3 rounded-full transition-all duration-300"
+                  className="bg-green-500 h-2 sm:h-3 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
-              <p className="text-sm mt-1">{Math.round(progress)}%</p>
+              <p className="text-xs sm:text-sm mt-1">{Math.round(progress)}%</p>
             </div>
           </div>
         )}

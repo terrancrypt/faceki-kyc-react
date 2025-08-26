@@ -7,8 +7,8 @@ function App() {
   const [isModelLoaded, setIsModelLoaded] = useState(false);
 
   const videoConstraints = {
-    width: 640,
-    height: 480,
+    width: { ideal: 640, max: 1280 },
+    height: { ideal: 480, max: 720 },
     facingMode: "user",
   };
 
@@ -26,16 +26,18 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center max-w-sm w-full">
           <Loader2
             className="animate-spin mx-auto mb-4 text-blue-600"
             size={48}
           />
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">
             Đang tải mô hình nhận diện khuôn mặt...
           </h2>
-          <p className="text-gray-500">Vui lòng chờ trong giây lát</p>
+          <p className="text-sm sm:text-base text-gray-500">
+            Vui lòng chờ trong giây lát
+          </p>
         </div>
       </div>
     );
@@ -43,16 +45,16 @@ function App() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-6">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center max-w-sm w-full">
           <AlertCircle className="mx-auto mb-4 text-red-500" size={48} />
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">
             Lỗi tải mô hình
           </h2>
-          <p className="text-gray-500 mb-4">{error}</p>
+          <p className="text-sm sm:text-base text-gray-500 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
           >
             Thử lại
           </button>
@@ -62,13 +64,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4">
+        <div className="text-center mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
             Xác thực KYC
           </h1>
-          <p className="text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600 px-2">
             Chụp ảnh giấy tờ và thực hiện liveness test để xác minh danh tính
           </p>
         </div>
