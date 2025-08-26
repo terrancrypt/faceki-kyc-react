@@ -1,6 +1,12 @@
 import React, { useRef, useCallback, useState } from "react";
 import Webcam from "react-webcam";
-import { Camera, RotateCcw, Check, AlertCircle } from "lucide-react";
+import {
+  Camera,
+  RotateCcw,
+  Check,
+  AlertCircle,
+  FlipCamera,
+} from "lucide-react";
 import type { DocumentType, DocumentSide } from "../hooks/useKYCFlow";
 
 interface DocumentCaptureProps {
@@ -23,6 +29,18 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
   const [isCapturing, setIsCapturing] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isBackCamera, setIsBackCamera] = useState(false);
+
+  // Tạo videoConstraints động dựa trên camera hiện tại
+  const currentVideoConstraints = {
+    ...videoConstraints,
+    facingMode: isBackCamera ? "environment" : "user",
+  };
+
+  const toggleCamera = useCallback(() => {
+    setIsBackCamera(!isBackCamera);
+    setCapturedImage(null); // Reset captured image when switching camera
+  }, [isBackCamera]);
 
   const capturePhoto = useCallback(() => {
     if (!webcamRef.current) return;
@@ -47,6 +65,7 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
   const retakePhoto = useCallback(() => {
     setCapturedImage(null);
     setError(null);
+    // Không reset camera khi chụp lại để giữ nguyên camera hiện tại
   }, []);
 
   const confirmPhoto = useCallback(() => {
@@ -83,6 +102,9 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
           📄 {getDocumentTitle()}
         </h2>
         <p className="text-gray-600">{getDocumentInstructions()}</p>
+        <div className="mt-2 text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full inline-block">
+          💡 Có thể chuyển đổi camera bằng nút ở góc trên bên phải
+        </div>
       </div>
 
       {/* Error Display */}
@@ -105,7 +127,7 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
                   ref={webcamRef}
                   audio={false}
                   screenshotFormat="image/jpeg"
-                  videoConstraints={videoConstraints}
+                  videoConstraints={currentVideoConstraints}
                   className="w-full"
                 />
 
@@ -116,6 +138,24 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
                       Khung chụp
                     </div>
                   </div>
+                </div>
+
+                {/* Camera Toggle Button */}
+                <div className="absolute top-4 right-4">
+                  <button
+                    onClick={toggleCamera}
+                    className="flex items-center gap-2 bg-black bg-opacity-50 text-white px-3 py-2 rounded-lg hover:bg-opacity-70 transition-all"
+                    title={
+                      isBackCamera
+                        ? "Chuyển sang camera trước"
+                        : "Chuyển sang camera sau"
+                    }
+                  >
+                    <FlipCamera size={20} />
+                    <span className="text-sm">
+                      {isBackCamera ? "Camera trước" : "Camera sau"}
+                    </span>
+                  </button>
                 </div>
 
                 {/* Capture Button */}
@@ -171,6 +211,7 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
               <li>• Ánh sáng đủ sáng và không bị chói</li>
               <li>• Giấy tờ phải rõ ràng, không bị mờ</li>
               <li>• Không che khuất thông tin quan trọng</li>
+              <li>• Có thể chuyển sang camera sau để chụp rõ hơn</li>
             </ul>
           </div>
 
@@ -216,6 +257,12 @@ const DocumentCapture: React.FC<DocumentCaptureProps> = ({
                   : "Đã chụp mặt sau"
                 : "Đã chụp hộ chiếu"}
             </p>
+            <div className="mt-2 pt-2 border-t border-gray-200">
+              <p className="text-xs text-gray-500">
+                📷 Camera hiện tại:{" "}
+                {isBackCamera ? "Camera sau" : "Camera trước"}
+              </p>
+            </div>
           </div>
         </div>
       </div>
