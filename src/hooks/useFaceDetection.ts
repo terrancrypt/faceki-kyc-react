@@ -1,11 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import * as faceapi from "face-api.js";
 
-// interface UseFaceDetectionProps {
-//   isModelLoaded: boolean;
-//   videoConstraints: any;
-// }
-
 export const useFaceDetection = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

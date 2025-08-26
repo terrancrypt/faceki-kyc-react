@@ -116,14 +116,10 @@ const LivenessStepScreen: React.FC<LivenessStepScreenProps> = ({
           ctx.fillStyle = "#00ff00";
           ctx.font = "16px Arial";
 
-          resizedDetections.forEach((detection, i) => {
-            const box = detection.detection.box;
-            ctx.strokeRect(box.x, box.y, box.width, box.height);
-            ctx.fillText(
-              `Face ${i + 1}: ${Math.round(detection.detection.score * 100)}%`,
-              box.x,
-              box.y > 20 ? box.y - 5 : box.y + box.height + 20
-            );
+          resizedDetections.forEach((detection) => {
+            // Thêm box xác định khuôn mặt nếu cần
+            // const box = detection.detection.box;
+            // ctx.strokeRect(box.x, box.y, box.width, box.height);
 
             if (detection.landmarks) {
               faceapi.draw.drawFaceLandmarks(canvas, [detection]);
