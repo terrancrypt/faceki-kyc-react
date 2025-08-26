@@ -11,6 +11,7 @@ interface LivenessFlowProps {
     front: string | null;
     left: string | null;
     right: string | null;
+    video: string | null;
   }) => void;
   onBack: () => void;
 }

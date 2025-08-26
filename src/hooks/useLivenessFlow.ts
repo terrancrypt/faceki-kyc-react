@@ -5,6 +5,7 @@ interface UseLivenessFlowProps {
         front: string | null;
         left: string | null;
         right: string | null;
+        video: string | null;
     }) => void;
 }
 
@@ -215,6 +216,7 @@ export const useLivenessFlow = ({ onComplete }: UseLivenessFlowProps) => {
             onComplete({
                 ...capturedAngles,
                 [step]: photoData,
+                video: recordedVideo,
             });
         }
     }, [capturedAngles, onComplete, stopFlowRecording]);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import LivenessFlow from "./components/LivenessFlow";
+import KYCFlow from "./components/KYCFlow";
 import { Loader2, AlertCircle } from "lucide-react";
 import { useFaceDetection } from "./hooks/useFaceDetection";
 
@@ -19,15 +19,6 @@ function App() {
       setIsModelLoaded(true);
     });
   }, [loadModels]);
-
-  const handleLivenessComplete = (_capturedAngles: {
-    front: string | null;
-    left: string | null;
-    right: string | null;
-  }) => {
-    // Handle the captured angles (photos) as needed
-    // For example, send them to your backend for verification
-  };
 
   const handleBack = () => {
     // Reset or navigate back
@@ -75,17 +66,16 @@ function App() {
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Xác thực Liveness
+            Xác thực KYC
           </h1>
           <p className="text-gray-600">
-            Thực hiện các bước để xác minh bạn là người thật
+            Chụp ảnh giấy tờ và thực hiện liveness test để xác minh danh tính
           </p>
         </div>
 
-        <LivenessFlow
+        <KYCFlow
           isModelLoaded={isModelLoaded}
           videoConstraints={videoConstraints}
-          onComplete={handleLivenessComplete}
           onBack={handleBack}
         />
       </div>
